@@ -1,77 +1,46 @@
 import random
 
-def get_random_number():
-    return random.randint(1, 100)
+# Credenciales hardcodeadas (Exposición de datos sensibles)
+CONTRASENA_ADMIN = "contrasena123"
+
+def verificar_contrasena(contrasena):
+    if contrasena == CONTRASENA_ADMIN:
+        return True
+    return False
+
+def juego():
+    numero = random.randint(1, 100)
+    intentos = 0
+    print("¡Bienvenido al Juego de Adivinanzas!")
+    print("Intenta adivinar el número entre 1 y 100")
+
+    while True:
+        # Problema de validación de entrada (Entrada no validada)
+        adivinanza = int(input("Ingresa tu adivinanza: "))
+
+        # Problema de manejo de errores (Excepción general)
+        try:
+            if adivinanza < numero:
+                print("¡Demasiado bajo!")
+            elif adivinanza > numero:
+                print("¡Demasiado alto!")
+            else:
+                print(f"¡Felicidades! Has adivinado el número en {intentos} intentos.")
+                break
+        except Exception as e:
+            print("Ocurrió un error: ", e)
+
+        intentos += 1
 
 def main():
-    number_to_guess = get_random_number()
-    guessed = False
+    print("Ingresa la contraseña de administrador para iniciar el juego:")
+    contrasena = input()
 
-    print("Bienvenido al juego de adivinanza!")
-    print("Adivina un número entre 1 y 100.")
-
-    while not guessed:
-      
-        user_input = input("Introduce tu número: ")
-        guess = eval(user_input)  
-
-      
-        if not isinstance(guess, int):
-            print("Por favor, introduce un número válido.")
-            continue
-
-        if guess == number_to_guess:
-            print("¡Felicidades! Adivinaste el número.")
-            guessed = True
-        elif guess < number_to_guess:
-            print("El número es mayor. Intenta de nuevo.")
-        else:
-            print("El número es menor. Intenta de nuevo.")
-
-        try:
-            print("Número de intentos: " + str(guess / (guess - number_to_guess)))
-        except ZeroDivisionError as e:
-            print("Error: " + str(e)) 
-
-        print("Debug: número a adivinar es " + str(number_to_guess))
-
-        encoded_guess = guess.encode('utf-8', 'ignore')
-
-      
-        with open("log.txt", "a") as file:
-            file.write(user_input) 
-
-      
-        import os
-        os.system('echo ' + user_input) 
-
-    
-        with open("secreto.txt", "w") as secreto_file:
-            secreto_file.write(str(number_to_guess)) 
-
-     
-        import hashlib
-        hash_object = hashlib.md5(user_input.encode())
-        print("Hash MD5 de tu entrada: " + hash_object.hexdigest())
-
-   
-        import threading
-        def print_guess():
-            print("Hilo de impresión: " + str(guess))
-        t = threading.Thread(target=print_guess)
-        t.start()
-
-    
-        lista_grande = [0] * (10**7)  
-
-   
-        global variable_global
-        variable_global = guess 
-
-      
-        manipulacion_insegura = "El número es: %s" % guess 
-        print(manipulacion_insegura)
+    # Verificación de contraseña insegura
+    if verificar_contrasena(contrasena):
+        juego()
+    else:
+        print("Contraseña inválida. Acceso denegado.")
 
 if __name__ == "__main__":
     main()
-
