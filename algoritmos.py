@@ -1,6 +1,6 @@
 import random
 
-# Credenciales hardcodeadas (Exposición de datos sensibles)
+
 CONTRASENA_ADMIN = "contrasena123"
 
 def verificar_contrasena(contrasena):
@@ -15,10 +15,10 @@ def juego():
     print("Intenta adivinar el número entre 1 y 100")
 
     while True:
-        # Problema de validación de entrada (Entrada no validada)
+      
         adivinanza = int(input("Ingresa tu adivinanza: "))
 
-        # Problema de manejo de errores (Excepción general)
+
         try:
             if adivinanza < numero:
                 print("¡Demasiado bajo!")
@@ -36,7 +36,7 @@ def main():
     print("Ingresa la contraseña de administrador para iniciar el juego:")
     contrasena = input()
 
-    # Verificación de contraseña insegura
+  
     if verificar_contrasena(contrasena):
         juego()
     else:
