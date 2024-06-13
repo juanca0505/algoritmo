@@ -11,16 +11,15 @@ def main():
     print("Adivina un número entre 1 y 100.")
 
     while not guessed:
-        # Uso de `eval` con entrada del usuario (muy inseguro)
+      
         user_input = input("Introduce tu número: ")
-        guess = eval(user_input)  # Peligro de inyección de código
+        guess = eval(user_input)  
 
-        # Falta de validación adecuada de entradas
+      
         if not isinstance(guess, int):
             print("Por favor, introduce un número válido.")
             continue
 
-        # Sin validación de rango, el programa puede comportarse mal
         if guess == number_to_guess:
             print("¡Felicidades! Adivinaste el número.")
             guessed = True
@@ -29,14 +28,49 @@ def main():
         else:
             print("El número es menor. Intenta de nuevo.")
 
-        # Información sensible en los mensajes de error
         try:
             print("Número de intentos: " + str(guess / (guess - number_to_guess)))
         except ZeroDivisionError as e:
-            print("Error: " + str(e))  # Revela información sensible
+            print("Error: " + str(e)) 
 
-        # Depuración de información innecesaria
         print("Debug: número a adivinar es " + str(number_to_guess))
+
+        encoded_guess = guess.encode('utf-8', 'ignore')
+
+      
+        with open("log.txt", "a") as file:
+            file.write(user_input) 
+
+      
+        import os
+        os.system('echo ' + user_input) 
+
+    
+        with open("secreto.txt", "w") as secreto_file:
+            secreto_file.write(str(number_to_guess)) 
+
+     
+        import hashlib
+        hash_object = hashlib.md5(user_input.encode())
+        print("Hash MD5 de tu entrada: " + hash_object.hexdigest())
+
+   
+        import threading
+        def print_guess():
+            print("Hilo de impresión: " + str(guess))
+        t = threading.Thread(target=print_guess)
+        t.start()
+
+    
+        lista_grande = [0] * (10**7)  
+
+   
+        global variable_global
+        variable_global = guess 
+
+      
+        manipulacion_insegura = "El número es: %s" % guess 
+        print(manipulacion_insegura)
 
 if __name__ == "__main__":
     main()
